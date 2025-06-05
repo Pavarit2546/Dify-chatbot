@@ -1,0 +1,68 @@
+services:
+  backend:
+    build:
+      context: ./DemoWebDify/backend
+      dockerfile: Dockerfile
+    container_name: web_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - DATABASE_URL=postgresql://postgres:mysecretpassword@postgres_db:5432/postgres?schema=public
+      - DIFY_API_KEY=app-VLHe75TMLZJ7c0QAnYlBLF4r
+      - DIFY_WEBHOOK_URL=http://docker-nginx-1/v1/chat-messages
+      - DIFY_API_URL=http://docker-nginx-1/v1
+      - WEB_API_CORS_ALLOW_ORIGINS=http://localhost:3001
+    depends_on:
+      - postgres
+    networks:
+      - dify_network
+
+  frontend:
+    build:
+      context: ./DemoWebDify/frontend
+      dockerfile: Dockerfile
+    container_name: web_frontend
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - API_URL=http://localhost:5001
+    networks:
+      - dify_network
+
+  postgres:
+    image: postgres:13
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dify_network
+
+  text-embeddings-inference:
+    build:
+      context: ./text-embeddings-inference
+      dockerfile: Dockerfile
+    container_name: text_embedding
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - dify_network
+
+networks:
+  dify_network:
+    external: true
+    name: docker_default
+
+volumes:
+  postgres_data:
+    driver: local

@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "axios": "^1.9.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "gpt-3-encoder": "^1.1.4",
+    "multer": "^1.4.5-lts.2",
+    "mysql2": "^3.14.1",
+    "pg": "^8.16.0",
+    "prisma": "^6.7.0",
+    "tesseract.js": "^6.0.1"
+  }
+}
